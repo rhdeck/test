@@ -57,9 +57,9 @@ class EventBigBetRecord extends Component {
               BettorAddress: element.returnValues.bettor,
               NFLWeek: element.returnValues.epoch,
               time: element.blockNumber,
-              BetSize: Number(element.returnValues.betsize),
+              BetSize: Number(element.returnValues.betAmount),
               LongPick: element.returnValues.pick,
-              MatchNum: element.returnValues.matchnum,
+              MatchNum: element.returnValues.matchNum,
             });
           }, this);
           this.bigBetHistory = pricedata;

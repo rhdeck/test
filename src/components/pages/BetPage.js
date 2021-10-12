@@ -19,6 +19,7 @@ import VBackgroundCom from "../basics/VBackgroundCom";
 import BettingContract from "../../abis/Betting.json";
 import OracleContract from "../../abis/Oracle.json";
 import TokenContract from "../../abis/Token.json";
+const BN = require('bn.js');
 
 var moment = require("moment");
 
@@ -54,6 +55,7 @@ class BetPagejs extends Component {
     //  this.checkRedeem();
   }, 1000);
   }
+
 
 
   handleBetSize(betAmount) {
@@ -153,7 +155,7 @@ class BetPagejs extends Component {
               BettorAddress: element.returnValues.bettor,
               Epoch: Number(element.returnValues.epoch),
               timestamp: Number(element.blockNumber.timestamp),
-              BetSize: element.returnValues.betsize,
+              BetSize: element.returnValues.betAmount,
               Offer: element.returnValues.offer,
               LongPick:Number(element.returnValues.pick),
               MatchNum: Number(element.returnValues.matchNum),

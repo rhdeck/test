@@ -178,11 +178,11 @@ class BigBetPagejs extends Component {
               Hashoutput: element.returnValues.contractHash,
               BettorAddress: element.returnValues.bettor,
               Epoch: Number(element.returnValues.epoch),
-              MatchNum: Number(element.returnValues.matchnum),
+              MatchNum: Number(element.returnValues.matchNum),
               OfferedTeam: Number(1 - element.returnValues.pick),
               timestamp: element.blockNumber.timestamp,
               Offer: element.returnValues.offer,
-              BetSize: Number(element.returnValues.betsize),
+              BetSize: Number(element.returnValues.betAmount),
               Payoff: Number(element.returnValues.payoff)
             });
             takes[element.returnValues.contractHash] = this.contracts[
@@ -236,11 +236,11 @@ class BigBetPagejs extends Component {
               Hashoutput2: element.returnValues.contractHash,
               BettorAddress2: element.returnValues.bettor,
               Epoch2: Number(element.returnValues.epoch),
-              MatchNum2: Number(element.returnValues.matchnum),
+              MatchNum2: Number(element.returnValues.matchNum),
               OfferedTeam2: Number(1 - element.returnValues.pick),
               timestamp2: element.blockNumber.timestamp,
               Offer: element.returnValues.offer,
-              BetSize2: Number(element.returnValues.betsize),
+              BetSize2: Number(element.returnValues.betAmount),
               Payoff2: Number(element.returnValues.payoff)
             });
             takes2[element.returnValues.contractHash] = this.contracts[
