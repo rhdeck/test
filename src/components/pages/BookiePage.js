@@ -126,7 +126,7 @@ class BookiePagejs extends Component {
       this.props.accounts[0]
     );
 
-    this.tokenKey = this.contracts["TokenMain"].methods.balanceOf.cacheCall("0x1F10666Df9a81b5C24192505bD19529060a037FD");
+    this.tokenKey = this.contracts["TokenMain"].methods.balanceOf.cacheCall("0xB1F59e0A168311e1Cfb7A420f4cfE8009dbF1411");
   }
 
   getSpreadText(spreadnumber) {

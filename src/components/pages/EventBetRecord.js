@@ -52,19 +52,21 @@ class EventBetRecord extends Component {
             pricedata.push({
               timestamp: element.blockNumber,
               Epoch: element.returnValues.epoch,
-              Offer: Boolean(element.returnValues.offer),
+              Offer: element.returnValues.offer,
               BetSize: element.returnValues.betAmount,
               LongPick: element.returnValues.pick,
               MatchNum: element.returnValues.matchNum,
               Payoff: element.returnValues.payoff,
               Hashoutput: element.returnValues.contractHash,
-              BettorAddress: element.returnValues.bettor,
+              BettorAddress: element.returnValues.bettor
             });
           }, this);
           this.priceHistory = pricedata;
         }.bind(this)
       );
   }
+
+
 
   openEtherscan() {
     const url =

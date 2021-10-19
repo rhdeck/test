@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { drizzleConnect } from "@drizzle/react-plugin";
 import PropTypes from "prop-types";
 import Split from "../layout/Split";
+//import web3 from "web3-utils";
 import web3 from "web3-utils";
 import { Box, Flex } from "@rebass/grid";
 import Logo from "../basics/Logo";
@@ -19,9 +20,9 @@ import VBackgroundCom from "../basics/VBackgroundCom";
 import BettingContract from "../../abis/Betting.json";
 import OracleContract from "../../abis/Oracle.json";
 import TokenContract from "../../abis/Token.json";
-const BN = require('bn.js');
 
 var moment = require("moment");
+var Web3 = require("web3");
 
 class BetPagejs extends Component {
   constructor(props, context) {
@@ -55,7 +56,6 @@ class BetPagejs extends Component {
     //  this.checkRedeem();
   }, 1000);
   }
-
 
 
   handleBetSize(betAmount) {
@@ -108,7 +108,25 @@ class BetPagejs extends Component {
       }
     );
   }
-
+/*
+  function unpack256(src)
+  const bn = new web3.utils.BN(src);
+  const str = bn.toString(16);
+  const pieces = str
+    .match(/.{1,2}/g)
+    .reverse()
+    .join("")
+    .match(/.{1,8}/g)
+    .map((s) =>
+      s
+        .match(/.{1,2}/g)
+        .reverse()
+        .join("")
+    );
+  const ints = pieces.map((s) => parseInt("0x" + s)).reverse();
+  return ints;
+  }
+*/
   redeemBet(x, y) {
     const stackId = this.contracts["BettingMain"].methods.redeem.cacheSend(x, y, {
       from: this.props.accounts[0],
@@ -208,19 +226,16 @@ class BetPagejs extends Component {
 
     this.betDataKey = this.contracts["BettingMain"].methods.showBetData.cacheCall();
 
-
-    this.tokenKey = this.contracts["TokenMain"].methods.balanceOf.cacheCall("0xB03abc8aB510a657d279624FcDb7E4be0F3c6415");
+    this.tokenKey = this.contracts["TokenMain"].methods.balanceOf.cacheCall("0xB1F59e0A168311e1Cfb7A420f4cfE8009dbF1411");
 
     this.userBalKey = this.contracts[
       "BettingMain"
     ].methods.userBalance.cacheCall(this.props.accounts[0]);
 
 
-
     this.sharesKey = this.contracts["BettingMain"].methods.lpStruct.cacheCall(
       this.props.accounts[0]
     );
-
 
     this.marginKey0 = this.contracts["BettingMain"].methods.margin.cacheCall(0);
 
@@ -236,13 +251,9 @@ class BetPagejs extends Component {
 
     this.marginKey6 = this.contracts["BettingMain"].methods.margin.cacheCall(6);
 
-
-
-
     this.scheduleStringKey = this.contracts[
       "OracleMain"
     ].methods.showSchedString.cacheCall();
-
 
   }
 
@@ -259,6 +270,42 @@ class BetPagejs extends Component {
       maxSize = maxSize2;
     }
     return maxSize;
+  }
+
+  unpack256to(src) {
+  const bn = new web3.toBN(src);
+  const str = bn.toString(16);
+  const pieces = str
+    .match(/.{1,2}/g)
+    .reverse()
+    .join("")
+    .match(/.{1,8}/g)
+    .map((s) =>
+      s
+        .match(/.{1,2}/g)
+        .reverse()
+        .join("")
+    );
+  const ints = pieces.map((s) => parseInt("0x" + s)).reverse();
+  return ints;
+  }
+
+  unpack256(src) {
+  const bn = new web3.BN(src);
+  const str = bn.toString(16);
+  const pieces = str
+    .match(/.{1,2}/g)
+    .reverse()
+    .join("")
+    .match(/.{1,8}/g)
+    .map((s) =>
+      s
+        .match(/.{1,2}/g)
+        .reverse()
+        .join("")
+    );
+  const ints = pieces.map((s) => parseInt("0x" + s)).reverse();
+  return ints;
   }
 
 
@@ -335,7 +382,7 @@ let usedCapital = "0";
       }
     }
 
-    let startTimeColumn = [1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932];
+
     let betData = [];
     if (
       this.betDataKey in this.props.contracts["BettingMain"].showBetData
@@ -348,6 +395,29 @@ let usedCapital = "0";
       }
     }
 
+    /**
+ * Unpacks a uint256 described  as a str
+ * param {string} src
+ *
+ * example:
+ *  unpack256("3316073442921887087233494075908471683470175455855365896090794942529659");
+ *  returns: [123, 456, 789, 123, 456, 789,   0, 123 ]
+ */
+
+
+const src =
+  //   "3316073440404769290352536979476828745307069448524228924342875165060240";
+  "3316073442921887087233494075908471683470175455855365896090794942529659";
+console.log("unpack", this.unpack256(src));
+
+const src2 =
+  //   "3316073440404769290352536979476828745307069448524228924342875165060240";
+  "3316073442921887087233494075908471683470175455855365896090794942529659";
+console.log("unpack", this.unpack256to(src2));
+
+
+
+/*
     let decOdds0 = [950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950];
     let decOdds1 = [950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950];
     let bets0 = [950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950];
@@ -356,7 +426,9 @@ let usedCapital = "0";
     let payoff1 = [950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950];
 
 
-
+    bets0, bets1, payoff0, payoff1, decOdds0, decOdds1, x startTime
+    */
+   //betLong[home/away], betPayout, starttime, odds
 
     let scheduleString = [
       "loading:...:...",
@@ -392,6 +464,14 @@ let usedCapital = "0";
         "loading:...:...",
         "loading:...:...",
     ];
+    let startTimeColumn = [1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932, 1640455932];
+    let odds0 = [957, 201, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950, 950];
+    let odds1 = [957, 4063, 1010, 1010, 1010, 1010, 1010, 1010, 1010, 1010, 1010, 1010, 1010, 1010, 1010, 1010, 1010, 1010, 1010, 1010, 1010, 1010, 1010, 1010, 1010, 1010, 1010, 1010, 1010, 1010, 1010, 1010];
+    let liab0 = [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100];
+    let liab1 = [-123, -123, -123, -123, -123, -123, -123, -123, -123, -123, -123, -123, -123, -123, -123, -123, -123, -123, -123, -123, -123, -123, -123, -123, -123, -123, -123, -123, -123, -123, -123, -123];
+
+    let oddsTot = [odds0, odds1];
+    let netLiab =[liab0, liab1]
 
     if (
       this.scheduleStringKey in
@@ -405,23 +485,43 @@ let usedCapital = "0";
       }
     }
 
-    let liab0 = [];
-    let liab1 = [];
+      let xdecode = [0,1,2,3,4,5,6,7];
 
-    for (let ii = 0; ii < 32; ii++) {
-      liab0[ii] = (Number(payoff0[ii]) - Number(bets1[ii])) / 1e1;
-      liab1[ii] = (Number(payoff1[ii]) - Number(bets0[ii])) / 1e1;
-    }
+    let x9 = betData[0];
+    let x10 =[];
+    x10 = this.unpack256(x9);
+    let bet0a = x10[0];
+    let bet1a = x10[1];
+    let pay0a = x10[2];
+    let pay1a = x10[3];
+    let odds0a = x10[4];
+    let odds1a = x10[5];
+    let starta = x10[7];
+    console.log("betData", x9);
+    console.log("bet0", bet0a);
+console.log("bet0", bet0a);
+console.log("bet1", bet1a);
+console.log("pay0", pay0a);
+console.log("pay1a", pay1a);
+console.log("odds0a", odds0a);
+console.log("odds1a", odds1a);
+console.log("starta", starta);
 
-    let netLiab = [];
-    netLiab = [liab0, liab1];
 
 
-    let oddsTot = [liab0, liab1];
-    for (let ii = 0; ii < 32; ii++) {
-      oddsTot[0][ii] = Number(decOdds0[ii]);
-      oddsTot[1][ii] = Number(decOdds1[ii]);
-    }
+
+/*
+      for (let ii = 0; ii < 32; ii++) {
+        xdecode = this.unpack256(betData[ii]);
+        odds0[ii] = Number(xdecode[4]);
+        odds1[ii] = Number(xdecode[5]);
+        startTimeColumn[ii] = xdecode[7];
+        netLiab[0][ii] = (Number(xdecode[2]) - Number(xdecode[1])) / 10;
+        netLiab[1][ii] = (Number(xdecode[3]) - Number(xdecode[0])) / 10;
+      }
+*/
+
+
 
     let userBalance = "0";
     if (this.userBalKey in this.props.contracts["BettingMain"].userBalance) {
@@ -431,8 +531,6 @@ let usedCapital = "0";
         userBalance = ub;
       }
     }
-
-
 
     let teamSplit = [];
     let faveSplit = [];
@@ -452,8 +550,6 @@ let usedCapital = "0";
       }
     }
 
-console.log("showBetData", betData);
-console.log("schedString", scheduleString);
 
     let teamList = [];
     const borderCells = 5;
@@ -484,8 +580,8 @@ console.log("schedString", scheduleString);
           </td>
           <td>
             {this.state.showDecimalOdds
-              ? (1 + (95 * oddsTot[0][i]) / 100000).toFixed(3)
-              : this.getMoneyLine((95 * oddsTot[0][i]) / 100)}
+              ? (1 + (95 * oddsTot[0][i]) ).toFixed(3)
+              : this.getMoneyLine((95 * oddsTot[0][i] / 100) )}
           </td>
           <td style={{ textAlign: "left", paddingLeft: "15px" }}>
             {startTimeColumn[i] > moment().unix() ? (
@@ -503,8 +599,8 @@ console.log("schedString", scheduleString);
           </td>
           <td>
             {this.state.showDecimalOdds
-              ? (1 + (95 * oddsTot[1][i]) / 100000).toFixed(3)
-              : this.getMoneyLine(oddsTot[1][i])}
+              ? (1 + (95 * oddsTot[1][i]) ).toFixed(3)
+              : this.getMoneyLine(95 * oddsTot[1][i] / 100)}
           </td>
           <td>{moment.unix(startTimeColumn[i]).format("MMMDD-ha")}</td>
         </tr>
@@ -945,13 +1041,12 @@ console.log("schedString", scheduleString);
                 {"  "}
                 Odds:{" "}
                 {(
-                  (0.95 * oddsTot[this.state.teamPick][this.state.matchPick]) /
-                    1000 +
+                  (0.95 * oddsTot[this.state.teamPick][this.state.matchPick])  +
                   1
                 ).toFixed(3)}
                 {" (MoneyLine "}
                 {this.getMoneyLine(
-                  oddsTot[this.state.teamPick][this.state.matchPick]
+                  0.95*oddsTot[this.state.teamPick][this.state.matchPick]
                 )}
                 {"),  "}
                 MaxBet:{" "}
@@ -970,13 +1065,12 @@ console.log("schedString", scheduleString);
                 Odds:{" "}
                 {(
                   (0.95 *
-                    oddsTot[1 - this.state.teamPick][this.state.matchPick]) /
-                    1000 +
+                    oddsTot[1 - this.state.teamPick][this.state.matchPick])  +
                   1
                 ).toFixed(3)}
                 {"  "}
                 MoneyLine:{" "}
-                {this.getMoneyLine(
+                {this.getMoneyLine(0.95*
                   oddsTot[1 - this.state.teamPick][this.state.matchPick]
                 )}
               </Text>
